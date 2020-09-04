@@ -1,0 +1,10 @@
+{
+    "version": 0,
+
+    "tools": {
+        "Repositories": {
+            "label": "Repositories",
+            "path": "repositories.html"
+        }
+    }
+}

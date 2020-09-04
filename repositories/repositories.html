@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Software Repositories</title>
+    <meta charset="utf-8">
+    <link href="../base1/patternfly.css" type="text/css" rel="stylesheet">
+    <link href="../base1/cockpit.css" type="text/css" rel="stylesheet">
+    <script src="../base1/cockpit.js"></script>
+</head>
+
+<body class="pf-m-redhat-font">
+    <div id="app">
+        <div class="container-fluid">
+            <div class="zypp-repositories">
+                <h2>Software Repositories</h2>
+                <table class="listing-ct available">
+                    <thead>
+                        <tr>
+                            <th scope="col">Enabled</th>
+                            <th scope="col">Autorefresh</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">URL</th>
+                        </tr>
+                    </thead>
+                    <tbody id="repo-list">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="repositories.js"></script>
+</body>
+
+</html>
