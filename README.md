@@ -23,5 +23,5 @@ the (open)SUSE distributions!
 ```shell
 git clone https://github.com/lslezak/cockpit-plugins.git
 mkdir -p ~/.local/share/cockpit
-ln -s cockpit-plugins ~/.local/share/cockpit
+ln -s ~/cockpit-plugins/* ~/.local/share/cockpit
 ```
