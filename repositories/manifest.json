@@ -2,9 +2,9 @@
     "version": 0,
 
     "tools": {
-        "Repositories": {
-            "label": "Repositories",
-            "path": "repositories.html"
+        "Wicked": {
+            "label": "Network (Wicked)",
+            "path": "wicked.html"
         }
     }
 }

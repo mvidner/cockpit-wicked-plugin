@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Software Repositories</title>
+    <title>Network (Wicked)</title>
     <meta charset="utf-8">
     <!-- This CSS link should not be needed, but the Cockpit in openSUSE TW
          looks a bit broken, the ../base1/cockpit.css links to
@@ -16,25 +16,25 @@
 <body class="pf-m-redhat-font">
     <div id="app">
         <div class="container-fluid">
-            <div class="zypp-repositories">
-                <h2>Software Repositories</h2>
+            <div class="network-interfaces">
+                <h2>Network Interfaces</h2>
                 <table class="listing-ct available">
                     <thead>
                         <tr>
-                            <th scope="col">Enabled</th>
-                            <th scope="col">Autorefresh</th>
                             <th scope="col">Name</th>
-                            <th scope="col">URL</th>
+                            <th scope="col">IP Address</th>
+                            <th scope="col">Sending</th>
+                            <th scope="col">Receiving</th>
                         </tr>
                     </thead>
-                    <tbody id="repo-list">
+                    <tbody id="interface-list">
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <script src="repositories.js"></script>
+    <script src="wicked.js"></script>
 </body>
 
 </html>

@@ -1,11 +1,11 @@
 
-const repo_list = document.getElementById("repo-list");
+const interface_list = document.getElementById("interface-list");
 
 function zypper_list_repos() {
     // delete the old content
-    repo_list.innerHTML = "";
+    interface_list.innerHTML = "";
     
-    cockpit.spawn(["zypper", "--xmlout", "lr"])
+    cockpit.spawn(["/usr/sbin/wicked", "show-xml", "all"])
         .then(zypper_list_success)
         .catch(zypper_list_fail);
 }
@@ -13,49 +13,58 @@ function zypper_list_repos() {
 function zypper_list_success(data) {
     let xmlDoc;
 
+    let header = "<root xmlns:ipv4=\"http://example.com/ipv4\" xmlns:ipv6=\"http://example.com/ipv6\">\n";
+    let footer = "</root>\n";
+    data = header + data + footer;
+
     if (window.DOMParser) {
+        console.log("MV: domparser");
         parser = new DOMParser();
         xmlDoc = parser.parseFromString(data, "text/xml");
     }
     else // MSIE
     {
+        console.log("MV: msie");
         xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
         xmlDoc.async = false;
-        xmlDoc.loadXML(txt);
+        xmlDoc.loadXML(data); // was: txt
     }
 
-    let repos = xmlDoc.getElementsByTagName("repo");
+    let repos = xmlDoc.getElementsByTagName("object");
     for (let i = 0; i < repos.length; i++) {
         let repo = repos[i];
 
-        let tr = document.createElement("tr");
-        tr.classList.add("listing-ct-item");
+        let tr_e = document.createElement("tr");
+        tr_e.classList.add("listing-ct-item");
 
-        let enabled = document.createElement("td");
-        enabled.append(create_checkbox(repo.getAttribute("enabled")));
-        enabled.addEventListener("click", function () {
-            zypper_enable_repo(repo.getAttribute("enabled") == "0", repo.getAttribute("alias"));
-        });
+        let name_e = document.createElement("th");
+        name_e.append(document.createTextNode(repo.getAttribute("path")));
 
-        let autorefresh = document.createElement("td");
-        autorefresh.append(create_checkbox(repo.getAttribute("autorefresh")));
-        autorefresh.addEventListener("click", function () {
-            zypper_refresh_repo(repo.getAttribute("autorefresh") == "0", repo.getAttribute("alias"));
-        });
+        let ip_e = document.createElement("th");
+        get_ip(repo, ip_e);
 
-        let name = document.createElement("th");
-        name.append(document.createTextNode(repo.getAttribute("name")));
+        let sending_e = document.createElement("th");
+        let receiving_e = document.createElement("th");
 
-        let url = document.createElement("td");
-        url.append(document.createTextNode(repo.getElementsByTagName("url")[0].textContent));
+        tr_e.appendChild(name_e);
+        tr_e.appendChild(ip_e);
+        tr_e.appendChild(sending_e);
+        tr_e.appendChild(receiving_e);
 
-        tr.appendChild(enabled);
-        tr.appendChild(autorefresh);
-        tr.appendChild(name);
-        tr.appendChild(url);
-
-        repo_list.appendChild(tr);
+        interface_list.appendChild(tr_e);
     };
+}
+
+function get_ip(object_e, th_e) {
+    let local_es = object_e.getElementsByTagName("local");
+
+    for (let i = 0; i < local_es.length; i++) {
+        let local_e = local_es[i];
+        let local_s = local_e.textContent;
+        let p_e = document.createElement("p");
+        p_e.append(document.createTextNode(local_s));
+        th_e.appendChild(p_e);
+    }
 }
 
 function create_checkbox(checked) {
