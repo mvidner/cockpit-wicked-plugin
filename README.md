@@ -3,25 +3,17 @@
 Experimental plugins for [Cockpit](https://cockpit-project.org/),
 just as a proof of concept, not for production use...
 
-## Repository Manager
+## Networking with Wicked
 
-A simple repository manager
+![Screenshot](cockpit-wicked-1st.png)
 
-![Screenshot](repositories.png)
-
-Note: Uses `zypper` command as a backend, that mean it will only work in
-the (open)SUSE distributions!
-
-## TODO
-
-- [ ] Add an alternative implementation using the [PackageKit](
-  https://www.freedesktop.org/software/PackageKit/gtk-doc/index.html)
-  [DBus API](https://www.freedesktop.org/software/PackageKit/gtk-doc/api-reference.html) (that will also work on another distributions...)
+Note: Uses `wicked show-xml` command as a backend, no DBus yet.
 
 ## Testing
 
 ```shell
-git clone https://github.com/lslezak/cockpit-plugins.git
+git clone https://github.com/mvidner/cockpit-wicked-plugin
+cd cockpit-wicked-plugin
 mkdir -p ~/.local/share/cockpit
-ln -s ~/cockpit-plugins/* ~/.local/share/cockpit
+ln -s `pwd`/*/ ~/.local/share/cockpit
 ```
