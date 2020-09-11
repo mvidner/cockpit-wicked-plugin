@@ -1,16 +1,16 @@
 
 const interface_list = document.getElementById("interface-list");
 
-function zypper_list_repos() {
+function wicked_list_ifaces() {
     // delete the old content
     interface_list.innerHTML = "";
     
     cockpit.spawn(["/usr/sbin/wicked", "show-xml", "all"])
-        .then(zypper_list_success)
-        .catch(zypper_list_fail);
+        .then(wicked_list_success)
+        .catch(wicked_list_fail);
 }
 
-function zypper_list_success(data) {
+function wicked_list_success(data) {
     let xmlDoc;
 
     let header = "<root xmlns:ipv4=\"http://example.com/ipv4\" xmlns:ipv6=\"http://example.com/ipv6\">\n";
@@ -30,18 +30,18 @@ function zypper_list_success(data) {
         xmlDoc.loadXML(data); // was: txt
     }
 
-    let repos = xmlDoc.getElementsByTagName("object");
-    for (let i = 0; i < repos.length; i++) {
-        let repo = repos[i];
+    let ifaces = xmlDoc.getElementsByTagName("object");
+    for (let i = 0; i < ifaces.length; i++) {
+        let iface = ifaces[i];
 
         let tr_e = document.createElement("tr");
         tr_e.classList.add("listing-ct-item");
 
         let name_e = document.createElement("th");
-        name_e.append(document.createTextNode(repo.getAttribute("path")));
+        name_e.append(document.createTextNode(iface.getAttribute("path")));
 
         let ip_e = document.createElement("th");
-        get_ip(repo, ip_e);
+        get_ip(iface, ip_e);
 
         let sending_e = document.createElement("th");
         let receiving_e = document.createElement("th");
@@ -67,41 +67,12 @@ function get_ip(object_e, th_e) {
     }
 }
 
-function create_checkbox(checked) {
-    let checkbox = document.createElement("i");
-    checkbox.classList.add("fa");
-
-    if (checked === "1")
-        checkbox.classList.add("fa-check-square-o");
-    else
-        checkbox.classList.add("fa-square-o");
-
-    return checkbox;
-}
-
-function zypper_list_fail(message) {
-    console.log("zypper failure: ", message);
-}
-
-function zypper_enable_repo(enable, alias) {
-    let option = enable ? "--enable" : "--disable";
-    zypper_modify_repo(option, alias);
-}
-
-function zypper_refresh_repo(autorefresh, alias) {
-    let option = autorefresh ? "--refresh" : "--no-refresh";
-    zypper_modify_repo(option, alias);
-}
-
-function zypper_modify_repo(option, alias)
-{
-    cockpit.spawn(["zypper", "modifyrepo", option, alias], { superuser: true })
-        .then(zypper_list_repos)
-        .catch(zypper_list_fail);
+function wicked_list_fail(message) {
+    console.log("wicked failure: ", message);
 }
 
 // init the content
-zypper_list_repos();
+wicked_list_ifaces();
 
 // Send a 'init' message.  This tells integration tests that we are ready to go
 cockpit.transport.wait(function () { });
